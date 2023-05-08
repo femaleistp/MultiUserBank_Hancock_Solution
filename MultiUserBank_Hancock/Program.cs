@@ -2,6 +2,7 @@
 // IT112
 // NOTES: none
 // BEHAVIORS NOT IMPLEMENTED AND WHY: n/a
+
 namespace MultiUserBank_Hancock
 {
     internal class Program
@@ -9,120 +10,117 @@ namespace MultiUserBank_Hancock
         static void Main(string[] args)
         {
             decimal balance = 10000;
-            Bank bank = new Bank(10000);
-
+            string[] username = { "jlennon", "pmccartney", "gharrison", "rstarr" };
+            string[] userPassword = { "johnny", "pauly", "georgy", "ringoy" };
+            decimal[] userBalance = { 1250, 2500, 3000, 1000 };
+            Bank bank = new Bank(balance, username, userPassword, userBalance);
 
             string entry;
-            int index;
+            string loggedIn;
 
             do
             {
                 MainMenu();
 
-                entry = ValidateUsername();
+                ValidateUsername();
 
-                index = MatchPassword(entry);
+                loggedIn = MatchPassword();
 
-                Submenu(index);
+                Submenu();
             } while (true);
 
-            void Submenu(int index)
+            void Submenu()
             {
                 Console.Clear();
-                string option;
-                int i = 0;
+                string option = String.Empty; ;
                 do
                 {
-                    i++;
-
                     do
                     {
-                        if (i == 1)
+                        if (option == String.Empty)
                         {
-                            Console.WriteLine("\n" + bank.GetUsername(index));
-                            Console.WriteLine("\nBank's total balance: " + bank.BankBalance.ToString("C"));
+                            Console.WriteLine("\n" + bank.GetUsername);
+                            Console.WriteLine("\nBank's total balance: " + bank.GetBankBalance.ToString("C"));
+                        }
+                        else if (option != "1" && option != "2" && option != "3" && option != "4")
+                        {
+                            Console.Clear();
+                            Console.WriteLine("\n" + bank.GetUsername);
                         }
                         Console.WriteLine("\nPress: \n1 - to DEPOSIT\n2 - to WITHDRAWAL\n3 - to CHECK BALANCE\n" +
                             "4 - to LOG OFF");
                         option = Console.ReadLine();
+
                     } while (option != "1" && option != "2" && option != "3" && option != "4");
 
-                    if (option == "1")
-                    {
-                        Console.Clear();
-                        Console.WriteLine("\n" + bank.GetUsername(index));
-                        Console.Write("Enter deposit amount: ");
-                        string amount = Console.ReadLine();
-                        bank.Deposit(index, decimal.Parse(amount));
-                        Console.Clear();
-                        Console.WriteLine("\n" + bank.GetUsername(index));
-                        Console.WriteLine("Your current balance: " + bank.UserBalance(index).ToString("C") + "\n");
-                    }
-                    if (option == "2")
-                    {
-                        Console.Clear();
-                        Console.WriteLine("\n" + bank.GetUsername(index));
-                        Console.Write("Enter withdrawal amount: ");
-                        string amount = Console.ReadLine();
-                        bank.Withdrawal(index, decimal.Parse(amount));
-                        Console.Clear();
-                        Console.WriteLine("\n" + bank.GetUsername(index));
-                        Console.WriteLine("Your current balance: " + bank.UserBalance(index).ToString("C") + "\n");
-                    }
-                    if (option == "3")
-                    {
-                        Console.Clear();
-                        Console.WriteLine("\n" + bank.GetUsername(index));
-                        Console.WriteLine("Your current balance: " + bank.UserBalance(index).ToString("C") + "\n");
-                    }
+                        Transaction(option);
                 } while (option != "4");
                 Console.Clear();
                 Console.WriteLine("Logging off...");
                 Thread.Sleep(900);
             }
 
-            string ValidateUsername()
+            void Transaction(string option)
             {
+                Console.Clear();
+                Console.WriteLine("\n" + bank.GetUsername);
+                if (option == "1")
+                {
+                    Console.Write("\nEnter deposit amount: ");
+                    bank.Deposit(decimal.Parse(Console.ReadLine()));
+                }
+                else if (option == "2")
+                {
+                    Console.Write("\nEnter withdrawal amount: ");
+                    bank.Withdrawal(decimal.Parse(Console.ReadLine()));
+                }
+                Console.Clear();
+                Message();
+            }
+
+            void Message()
+            {
+                Console.Clear();
+                Console.WriteLine("\n" + bank.GetUsername);
+                Console.WriteLine("\nYour current balance: " + bank.GetUserBalance.ToString("C"));
+            }
+
+            void ValidateUsername()
+            {
+                int i;
                 Console.Clear();
                 do
                 {
                     entry = string.Empty;
                     Console.Write("\nEnter username: ");
                     entry = Console.ReadLine();
-                    entry = bank.CheckUsername(entry);
-                } while (entry == "account does not exist");
-                return entry;
+                    i = bank.CheckUsername(entry);
+                } while (i == -1);
             }
 
-
-
-            int MatchPassword(string username)
+            string MatchPassword()
             {
                 string input;
-                int index;
                 do
                 {
                     Console.Write("Enter password: ");
                     input = Console.ReadLine();
-                    index = bank.UserPassword(input, username);
-                } while (index == -1);
-
-                return index;
+                    loggedIn = bank.CheckUserPassword(input);
+                } while (loggedIn == "false");
+                return loggedIn;
             }
 
             void MainMenu()
             {
                 Console.Clear();
-                string input;
-                int i = -1;
+                string input = String.Empty;
                 do
                 {
-                    i++;
-                    input = string.Empty;
-                    if (i == 0)
+                    Console.Clear();
+                    if (input != "1" && input != "2")
                     {
                         Console.WriteLine("\nGreetings, esteemed customer !");
-                        Console.WriteLine("\nBank's total balance: " + bank.BankBalance.ToString("C"));
+                        Console.WriteLine("\nBank's total balance: " + bank.GetBankBalance.ToString("C"));
                     }
                     Console.WriteLine("\nPress:\n1 - to LOG IN\n2 - to EXIT");
                     input = Console.ReadLine();

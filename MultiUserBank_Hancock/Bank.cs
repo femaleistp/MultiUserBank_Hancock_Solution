@@ -1,86 +1,87 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MultiUserBank_Hancock
+﻿namespace MultiUserBank_Hancock
 {
     internal class Bank
     {
         private decimal _bankBalance;
-        private string[] _username = { "jlennon", "pmccartney", "gharrison", "rstarr" };
-        private string[] _userPassword = { "johnny", "pauly", "georgy", "ringoy" };
-        private decimal[] _userBalance = { 1250, 2500, 3000, 1000 };
+        private string[] _username = new string[4];
+        private string[] _userPassword = new string[4];
+        private decimal[] _userBalance = new decimal[4];
 
-        public Bank(decimal bankBalance)
+        private int _userIndex;
+
+        public Bank(decimal bankBalance, string[] username, string[] password, decimal[] userBalance)
         {
             _bankBalance = bankBalance;
+            for (int i = 0; i < username.Length; i++)
+            {
+                _username[i] = username[i];
+                _userPassword[i] = password[i];
+                _userBalance[i] = userBalance[i];
+            }
         }
 
-        public void Withdrawal(int i, decimal withdrawal)
+        public void Withdrawal(decimal withdrawal)
         {
             if (withdrawal > 500)
             {
                 withdrawal = 500;
             }
 
-            if ((_bankBalance - withdrawal) < 0)
+            if ((_userBalance[_userIndex] - withdrawal) < 0)
             {
-                withdrawal = withdrawal + (_bankBalance - withdrawal);
+                withdrawal = withdrawal + (_userBalance[_userIndex] - withdrawal);
             }
 
-            if ((_userBalance[i] - withdrawal) < 0)
-            {
-                withdrawal = withdrawal + (_userBalance[i] - withdrawal);
-            }
-
-            _userBalance[i] -= withdrawal;
+            _userBalance[_userIndex] -= withdrawal;
             _bankBalance -= withdrawal;
         }
 
-        public void Deposit(int index, decimal deposit)
+        public void Deposit(decimal deposit)
         {
-            _userBalance[index] += deposit;
+            _userBalance[_userIndex] += deposit;
             _bankBalance += deposit;
         }
 
-        public string CheckUsername(string entry)
+        public int CheckUsername(string entry)
         {
+            _userIndex = -1;
             for (int i = 0; i < _username.Length; i++)
             {
                 if (entry == _username[i])
                 {
-                    return _username[i];
+                    _userIndex = i;
+                    return _userIndex;
                 }
             }
-            return "account does not exist";
+            return _userIndex;
         }
 
-        public int UserPassword(string password, string username)
+        public string CheckUserPassword(string password)
         {
+                if (password == _userPassword[_userIndex])
+                {
+                    return "true";
+                }
+            return "false";
+        }
 
-            int index = -1;
-            for (int i = 0; i < _userPassword.Length; i++)
+        public string GetUsername
+        {
+            get
             {
-                if (password == _userPassword[i])
-                    return i;
+                return _username[_userIndex];
             }
-            return index;
         }
 
-        public string GetUsername(int index)
+        public decimal GetUserBalance
         {
-            return _username[index];
+            get
+            {
+                return _userBalance[_userIndex];
+            }
         }
 
-        public decimal UserBalance(int index)
-        {
-
-            return _userBalance[index];
-        }
-
-        public decimal BankBalance
+        public decimal GetBankBalance
         {
             get
             {
