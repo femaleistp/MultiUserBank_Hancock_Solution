@@ -26,19 +26,6 @@ namespace MultiUserBank_Hancock
                 Submenu(index);
             } while (true);
 
-            void Message(int i)
-            {
-                if (i == 0)
-                {
-                    Console.WriteLine("\nWell done, " + bank.GetUsername(index) + " !");
-                }
-                if (i != 0)
-                {
-                    Console.Clear();
-                    Console.WriteLine("\nSuccess! \nNew account balance: " + bank.UserBalance(index).ToString("C"));
-                }
-            }
-
             void Submenu(int index)
             {
                 Console.Clear();
@@ -70,7 +57,6 @@ namespace MultiUserBank_Hancock
                         Console.Clear();
                         Console.WriteLine("\n" + bank.GetUsername(index));
                         Console.WriteLine("Your current balance: " + bank.UserBalance(index).ToString("C") + "\n");
-                        Console.WriteLine("\nBank's total balance: " + bank.BankBalance.ToString("C"));
                     }
                     if (option == "2")
                     {
@@ -82,14 +68,12 @@ namespace MultiUserBank_Hancock
                         Console.Clear();
                         Console.WriteLine("\n" + bank.GetUsername(index));
                         Console.WriteLine("Your current balance: " + bank.UserBalance(index).ToString("C") + "\n");
-                        Console.WriteLine("\nBank's total balance: " + bank.BankBalance.ToString("C"));
                     }
                     if (option == "3")
                     {
                         Console.Clear();
                         Console.WriteLine("\n" + bank.GetUsername(index));
                         Console.WriteLine("Your current balance: " + bank.UserBalance(index).ToString("C") + "\n");
-                        Console.WriteLine("\nBank's total balance: " + bank.BankBalance.ToString("C"));
                     }
                 } while (option != "4");
                 Console.Clear();
@@ -138,6 +122,7 @@ namespace MultiUserBank_Hancock
                     if (i == 0)
                     {
                         Console.WriteLine("\nGreetings, esteemed customer !");
+                        Console.WriteLine("\nBank's total balance: " + bank.BankBalance.ToString("C"));
                     }
                     Console.WriteLine("\nPress:\n1 - to LOG IN\n2 - to EXIT");
                     input = Console.ReadLine();
