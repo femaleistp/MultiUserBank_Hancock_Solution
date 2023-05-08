@@ -1,4 +1,8 @@
-﻿namespace MultiUserBank_Hancock
+﻿// Brittany Hancock
+// IT112
+// NOTES: none
+// BEHAVIORS NOT IMPLEMENTED AND WHY: n/a
+namespace MultiUserBank_Hancock
 {
     internal class Program
     {
