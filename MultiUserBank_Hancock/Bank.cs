@@ -20,6 +20,28 @@
             }
         }
 
+        public int CheckUsername(string entry)
+        {
+            _userIndex = -1;
+            for (int i = 0; i < _username.Length; i++)
+            {
+                if (entry == _username[i])
+                {
+                    _userIndex = i;
+                }
+            }
+            return _userIndex;
+        }
+
+        public string CheckUserPassword(string password)
+        {
+            if (password == _userPassword[_userIndex])
+            {
+                return "true";
+            }
+            return "false";
+        }
+
         public void Withdrawal(decimal withdrawal)
         {
             if (withdrawal > 500)
@@ -29,7 +51,7 @@
 
             if ((_userBalance[_userIndex] - withdrawal) < 0)
             {
-                withdrawal = withdrawal + (_userBalance[_userIndex] - withdrawal);
+                withdrawal += (_userBalance[_userIndex] - withdrawal);
             }
 
             _userBalance[_userIndex] -= withdrawal;
@@ -40,29 +62,6 @@
         {
             _userBalance[_userIndex] += deposit;
             _bankBalance += deposit;
-        }
-
-        public int CheckUsername(string entry)
-        {
-            _userIndex = -1;
-            for (int i = 0; i < _username.Length; i++)
-            {
-                if (entry == _username[i])
-                {
-                    _userIndex = i;
-                    return _userIndex;
-                }
-            }
-            return _userIndex;
-        }
-
-        public string CheckUserPassword(string password)
-        {
-                if (password == _userPassword[_userIndex])
-                {
-                    return "true";
-                }
-            return "false";
         }
 
         public string GetUsername
